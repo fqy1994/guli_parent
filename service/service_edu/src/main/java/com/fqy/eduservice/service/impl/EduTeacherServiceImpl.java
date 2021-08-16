@@ -5,6 +5,9 @@ import com.fqy.eduservice.mapper.EduTeacherMapper;
 import com.fqy.eduservice.service.EduTeacherService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -16,5 +19,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
-
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean removeById(Serializable id) {
+        return 0 != baseMapper.deleteById(id);
+    }
 }
