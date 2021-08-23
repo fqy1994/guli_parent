@@ -64,7 +64,7 @@ public class EduTeacherController {
         }
     }
 
-    @GetMapping("/pageTeacher/{current}/{limit}")
+    @PostMapping("/pageTeacher/{current}/{limit}")
     public R pageListTeacher(@PathVariable long current,
                              @PathVariable long limit) {
         Page<EduTeacher> pageTeacher = new Page<>(current, limit);
@@ -79,9 +79,9 @@ public class EduTeacherController {
 
     }
 
-    @GetMapping("pageTeacherCondition/{current}/{limit}")
+    @PostMapping("pageTeacherCondition/{current}/{limit}")
     public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit,
-                                  TeacherQuery teacherQuery) {
+                                  @RequestBody(required = false) TeacherQuery teacherQuery) {
         //创建page对象
         Page<EduTeacher> pageTeacher = new Page<>(current, limit);
 
@@ -91,7 +91,7 @@ public class EduTeacherController {
         Integer level = teacherQuery.getLevel();
         String begin = teacherQuery.getBegin();
         String end = teacherQuery.getEnd();
-        if (StringUtils.isEmpty(name)){
+        if (!StringUtils.isEmpty(name)){
             wrapper.like("name",name);
         }
         if (!StringUtils.isEmpty(level)){
