@@ -64,6 +64,7 @@ public class EduTeacherController {
         }
     }
 
+    //分页查询列表
     @PostMapping("/pageTeacher/{current}/{limit}")
     public R pageListTeacher(@PathVariable long current,
                              @PathVariable long limit) {
@@ -79,6 +80,7 @@ public class EduTeacherController {
 
     }
 
+    //分页条件查询列表
     @PostMapping("pageTeacherCondition/{current}/{limit}")
     public R pageTeacherCondition(@PathVariable long current, @PathVariable long limit,
                                   @RequestBody(required = false) TeacherQuery teacherQuery) {
@@ -117,6 +119,7 @@ public class EduTeacherController {
 
     }
 
+    //添加老师
     @PostMapping("/addTeacher")
     public R addTeacher(@RequestBody EduTeacher eduTeacher){
         boolean save = teacherService.save(eduTeacher);
@@ -129,6 +132,7 @@ public class EduTeacherController {
 
 
     }
+
     //根据id查老师
     @GetMapping("/getTeacher/{id}")
     private R getTeahcer(@PathVariable String id){
