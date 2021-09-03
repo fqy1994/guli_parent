@@ -32,6 +32,8 @@ public class OssServiceImpl implements OssService {
             // 创建OSSClient实例。
             OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
+            InputStream inputStream = file.getInputStream();
+
             String fileName = file.getOriginalFilename();
 
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -43,7 +45,7 @@ public class OssServiceImpl implements OssService {
 
 
             // 填写本地文件的完整路径。如果未指定本地路径，则默认从示例程序所属项目对应本地路径中上传文件流。
-            InputStream inputStream = file.getInputStream();
+
             // 依次填写Bucket名称（例如examplebucket）和Object完整路径（例如exampledir/exampleobject.txt）。Object完整路径中不能包含Bucket名称。
             ossClient.putObject(bucketName, fileName, inputStream);
 
