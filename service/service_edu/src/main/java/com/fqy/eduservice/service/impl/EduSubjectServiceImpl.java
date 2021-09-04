@@ -49,6 +49,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     //获取数据封装成前端需要的格式
     @Override
     public List<OneSubject> getAllOneTwoSubject() {
+
         //查询所有一级分类
         QueryWrapper<EduSubject> wrapperOne = new QueryWrapper<>();
         wrapperOne.eq("parent_id","0");
