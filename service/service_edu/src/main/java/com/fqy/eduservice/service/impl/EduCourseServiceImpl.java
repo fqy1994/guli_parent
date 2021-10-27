@@ -3,6 +3,7 @@ package com.fqy.eduservice.service.impl;
 import com.fqy.eduservice.entity.EduCourse;
 import com.fqy.eduservice.entity.EduCourseDescription;
 import com.fqy.eduservice.entity.vo.CourseInfoVo;
+import com.fqy.eduservice.entity.vo.CoursePublishVo;
 import com.fqy.eduservice.mapper.EduCourseMapper;
 import com.fqy.eduservice.service.EduCourseDescriptionService;
 import com.fqy.eduservice.service.EduCourseService;
@@ -27,17 +28,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
 
-//添加课程信息的方法
+    //添加课程信息的方法
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         //向课程表添加课程基本信息
         //CourseInfoVo对象转换eduCourse对象
         EduCourse eduCourse = new EduCourse();
-        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int insert = baseMapper.insert(eduCourse);
         if (insert == 0) {
             //添加失败
-            throw new GuliException(20001,"添加课程信息失败");
+            throw new GuliException(20001, "添加课程信息失败");
         }
         //获取添加之后课程id
         String cid = eduCourse.getId();
@@ -60,12 +61,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //1 查询课程表
         EduCourse eduCourse = baseMapper.selectById(courseId);
         CourseInfoVo courseInfoVo = new CourseInfoVo();
-        BeanUtils.copyProperties(eduCourse,courseInfoVo);
+        BeanUtils.copyProperties(eduCourse, courseInfoVo);
 
         //2 查询描述表
         EduCourseDescription courseDescription = courseDescriptionService.getById(courseId);
         courseInfoVo.setDescription(courseDescription.getDescription());
-
 
 
         return courseInfoVo;
@@ -76,10 +76,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public void updateCourseInfo(CourseInfoVo courseInfoVo) {
         //修改课程表
         EduCourse eduCourse = new EduCourse();
-        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int update = baseMapper.updateById(eduCourse);
         if (update == 0) {
-            throw new GuliException(20001,"修改课程信息失败");
+            throw new GuliException(20001, "修改课程信息失败");
         }
         //修改描述表
         EduCourseDescription description = new EduCourseDescription();
@@ -87,6 +87,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         description.setDescription(courseInfoVo.getDescription());
         courseDescriptionService.updateById(description);
 
+    }
+
+    @Override
+    public CoursePublishVo publishCourseInfo(String id) {
+        CoursePublishVo coursePublishVo = baseMapper.getPublishCourseInfo(id);
+
+        return coursePublishVo;
     }
 
 }
