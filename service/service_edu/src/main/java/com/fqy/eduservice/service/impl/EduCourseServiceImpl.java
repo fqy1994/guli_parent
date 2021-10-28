@@ -1,13 +1,18 @@
 package com.fqy.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fqy.eduservice.entity.EduChapter;
 import com.fqy.eduservice.entity.EduCourse;
 import com.fqy.eduservice.entity.EduCourseDescription;
+import com.fqy.eduservice.entity.EduVideo;
 import com.fqy.eduservice.entity.vo.CourseInfoVo;
 import com.fqy.eduservice.entity.vo.CoursePublishVo;
 import com.fqy.eduservice.mapper.EduCourseMapper;
+import com.fqy.eduservice.service.EduChapterService;
 import com.fqy.eduservice.service.EduCourseDescriptionService;
 import com.fqy.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fqy.eduservice.service.EduVideoService;
 import com.fqy.servicebase.exceptionhandler.GuliException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     //因为要向别的表操作，所以要用到别的表的service，用谁就注入谁
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
+    @Autowired
+    private EduVideoService eduVideoService;
+    @Autowired
+    private EduChapterService eduChapterService;
+
 
     //添加课程信息的方法
     @Override
@@ -94,6 +104,27 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         CoursePublishVo coursePublishVo = baseMapper.getPublishCourseInfo(id);
 
         return coursePublishVo;
+    }
+
+    @Override
+    public void removeCourse(String courseId) {
+        //删除小节
+        //TODO 删除小节删除对应视频的文件还有事务要不要用
+        eduVideoService.removeVideoByCourseId(courseId);
+
+
+        //删除章节
+        eduChapterService.removeChapterByCourseId(courseId);
+
+        //删除描述
+        courseDescriptionService.removeDescriptionById(courseId);
+
+        //删除课程
+        int result = baseMapper.deleteById(courseId);
+        if (result==0){
+            throw new GuliException(20001,"删除失败");
+
+        }
     }
 
 }
