@@ -28,13 +28,13 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir("D:\\workspace_ideal\\guli_parent\\service\\service_edu" + "/src/main/java");
 
-        gc.setAuthor("testjava");
+        gc.setAuthor("fan_jane");
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖
 
         gc.setServiceName("%sService");	//去掉Service接口的首字母I
 
-        gc.setIdType(IdType.ID_WORKER); //主键策略
+        gc.setIdType(IdType.ID_WORKER_STR); //主键策略
         gc.setDateType(DateType.ONLY_DATE);//定义生成的实体类中日期类型
         gc.setSwagger2(true);//开启Swagger2模式
 
@@ -42,10 +42,10 @@ public class CodeGenerator {
 
         // 3、数据源配置,代码生成器的数据库可以和之前的不一个库，所以需要连接资源
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/guli?serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://116.63.185.111:3306/system?characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("DUT-SHM-DB1");
         dsc.setDbType(DbType.MYSQL);
         mpg.setDataSource(dsc);
 
@@ -62,7 +62,7 @@ public class CodeGenerator {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_course","edu_course_description","edu_chapter","edu_video");
+        strategy.setInclude("t_bridge_info");
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
